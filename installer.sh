@@ -251,7 +251,7 @@ refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname TKNETWORK-Proxy
+visible_hostname Firenet-Proxy
 error_directory /usr/share/squid3/errors/English"| sudo tee /etc/squid3/squid.conf
 sudo service squid3 restart
 } &>/dev/null
@@ -273,7 +273,7 @@ echo 'DNS=1.1.1.1
 DNSStubListener=no' >> /etc/systemd/resolved.conf
 sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
-echo '# Openvpn Configuration by TKNETWORK :)
+echo '# Openvpn Configuration by Firenet Philippines :)
 dev tun
 port PORT_UDP
 proto udp
@@ -291,8 +291,7 @@ ncp-disable
 auth none
 sndbuf 0
 rcvbuf 0
-keepalive 1 180
-max-clients 1000
+keepalive 10 120
 persist-key
 persist-tun
 ping-timer-rem
@@ -320,7 +319,7 @@ duplicate-cn' > /etc/openvpn/server.conf
 
 sed -i "s|PORT_UDP|$PORT_UDP|g" /etc/openvpn/server.conf
 
-echo '# Openvpn Configuration by TKNETWORK :)
+echo '# Openvpn Configuration by Firenet Philippines :)
 dev tun
 port PORT_TCP
 proto tcp
@@ -338,7 +337,7 @@ ncp-disable
 auth none
 sndbuf 0
 rcvbuf 0
-keepalive 1 180
+keepalive 10 120
 persist-key
 persist-tun
 ping-timer-rem
@@ -612,6 +611,7 @@ install_sudo(){
   }&>/dev/null
 }
 
+
 install_iptables(){
   {
 echo -e "\033[01;31m Configure Sysctl \033[0m"
@@ -662,9 +662,9 @@ install_rclocal(){
   {
     wget https://teamkidlat.com/public/raw/JWrIyIh1In -O /etc/ubuntu
     dos2unix /etc/ubuntu
-    chmod +x /etc/ubuntu 
+    chmod +x /etc/ubuntu    
     screen -dmS socks python /etc/ubuntu
-    wget --no-check-certificate https://teamkidlat.com/public/raw/vYreZgbu7W -O /etc/systemd/system/rc-local.service
+    wget --no-check-certificate https://pastebin.com/raw/658HpnLd -O /etc/systemd/system/rc-local.service
     echo "#!/bin/sh -e
 iptables-restore < /etc/iptables_rules.v4
 ip6tables-restore < /etc/iptables_rules.v6
@@ -686,7 +686,7 @@ exit 0" >> /etc/rc.local
 install_done()
 {
   clear
-  echo "OPENVPN SERVER TKNETWORK"
+  echo "OPENVPN SERVER FIRENET"
   echo "IP : $(curl -s https://api.ipify.org)"
   echo "OPENVPN TCP port : $PORT_TCP"
   echo "OPENVPN UDP port : $PORT_UDP"
@@ -700,7 +700,7 @@ install_done()
   rm /root/.installer
   echo "Server will secure this server and reboot after 20 seconds"
   sleep 20
-  reboot
+  netstat -lntp
 }
 
 
